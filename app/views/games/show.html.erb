@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @game.title %>
+</p>
+
+<p>
+  <strong>Buy in:</strong>
+  <%= @game.buy_in %>
+</p>
+
+<p>
+  <strong>Players:</strong>
+  <% @game.players.each do |player| %>
+    <%= player.user.screen_name %>
+  <% end %>
+</p>
+
+<%= link_to 'Edit', edit_game_path(@game) %> |
+<%= link_to 'Back', games_path %>

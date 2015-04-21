@@ -1,4 +1,8 @@
 SampleCasino::Application.routes.draw do
+  resources :players
+
+  resources :games
+
   root 'static_pages#home'
   get "static_pages/home"
   get "static_pages/help"
