@@ -1,4 +1,8 @@
 SampleCasino::Application.routes.draw do
+  resources :cashiers
+
+  resources :organizations
+
   resources :players
 
   resources :games

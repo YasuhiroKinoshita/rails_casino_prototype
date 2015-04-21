@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Organization:</strong>
+  <%= @cashier.organization_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @cashier.user_id %>
+</p>
+
+<p>
+  <strong>Money:</strong>
+  <%= @cashier.money %>
+</p>
+
+<%= link_to 'Edit', edit_cashier_path(@cashier) %> |
+<%= link_to 'Back', cashiers_path %>
