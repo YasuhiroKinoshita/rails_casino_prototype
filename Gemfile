@@ -34,6 +34,7 @@ gem 'settingslogic'
 
 group :development do
   gem 'pry'
+  gem 'pry-rails'
   gem 'rb-readline'
 end
 
