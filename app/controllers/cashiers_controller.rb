@@ -1,4 +1,4 @@
-class CashiersController < BaseController
+class CashiersController < ApplicationController
   before_action :set_cashier, only: [:show, :edit, :update, :destroy]
 
   # GET /cashiers
