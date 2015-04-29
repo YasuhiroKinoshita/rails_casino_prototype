@@ -14,7 +14,7 @@ class OrganizationsController < ApplicationController
 
   # GET /organizations/new
   def new
-    @organization = Organization.new
+    @organization = current_user.created_organizations.build
   end
 
   # GET /organizations/1/edit
@@ -24,7 +24,7 @@ class OrganizationsController < ApplicationController
   # POST /organizations
   # POST /organizations.json
   def create
-    @organization = Organization.new(organization_params)
+    @organization = current_user.created_organizations.build(organization_params)
 
     respond_to do |format|
       if @organization.save
