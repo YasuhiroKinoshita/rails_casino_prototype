@@ -13,5 +13,25 @@
   <% end %>
 </p>
 
+<p>
+  <strong>Members:</strong>
+  <% @organization.members.each do |member| %>
+    name:<%= member.user.name %>
+  <% end %>
+</p>
+
+<p>
+  <strong>Add new member:</strong>
+  <%= form_for(@organization.members.build, url: organization_members_path(@organization)) do |f| %>
+    <div class="field">
+      <%= f.label :user_id %><br>
+      <%= f.number_field :user_id %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+</p>
+
 <%= link_to 'Edit', edit_organization_path(@organization) %> |
 <%= link_to 'Back', organizations_path %>
