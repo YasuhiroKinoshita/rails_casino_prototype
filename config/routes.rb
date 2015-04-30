@@ -1,11 +1,13 @@
 SampleCasino::Application.routes.draw do
   resources :cashiers
 
-  resources :organizations
+  resources :organizations do
+    resources :games
+  end
 
   resources :players
 
-  resources :games
+  resources :games, only: %i{show edit}
 
   root 'static_pages#home'
   get "static_pages/home"

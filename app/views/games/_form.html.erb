@@ -1,4 +1,4 @@
-<%= form_for(@game) do |f| %>
+<%= form_for([@organization, @game]) do |f| %>
   <% if @game.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@game.errors.count, "error") %> prohibited this game from being saved:</h2>
@@ -18,10 +18,6 @@
   <div class="field">
     <%= f.label :buy_in %><br>
     <%= f.number_field :buy_in %>
-  </div>
-  <div class="field">
-    <%= f.label :organizaion_id %><br>
-    <%= f.number_field :organizaion_id %>
   </div>
   <div class="actions">
     <%= f.submit %>

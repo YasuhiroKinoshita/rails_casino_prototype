@@ -18,4 +18,6 @@
 </p>
 
 <%= link_to 'Edit', edit_game_path(@game) %> |
-<%= link_to 'Back', games_path %>
+<% if @organization %>
+  <%= link_to 'Back', organization_games_path %>
+<% end %>

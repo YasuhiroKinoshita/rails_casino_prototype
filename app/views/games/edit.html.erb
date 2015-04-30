@@ -3,4 +3,6 @@
 <%= render 'form' %>
 
 <%= link_to 'Show', @game %> |
-<%= link_to 'Back', games_path %>
+<% if @organization %>
+  <%= link_to 'Back', games_path %>
+<% end %>
