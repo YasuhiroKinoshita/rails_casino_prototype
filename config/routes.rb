@@ -1,10 +1,13 @@
 SampleCasino::Application.routes.draw do
 
-  resources :cashiers
 
   resources :organizations do
     resources :games
-    resources :members, only: %i{index create destroy}
+    resources :members, only: %i{index create destroy} do
+      member do
+        get 'cashier'
+      end
+    end
   end
 
   resources :players

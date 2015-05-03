@@ -6,11 +6,16 @@ class MembersController < ApplicationController
 
   def create
     return unless @organization = Organization.find(params[:organization_id])
-    @member = @organization.members.build(member_param)
-
-    if @member.save
-      redirect_to @organization, notice: 'Member was successfully added.'
-    else
+    begin
+      ActiveRecord::Base.transaction do
+        @member = @organization.members.build(member_param)
+        @member.save!
+        @cashier = @member.build_cashier
+        @cashier.save!
+        redirect_to @organization, notice: 'Member was successfully added.'
+      end
+    rescue => e
+      logger.error(e)
       redirect_to @organization, alert: 'Faild'
     end
   end
@@ -18,6 +23,10 @@ class MembersController < ApplicationController
   def destroy
     @organization.memner(member_param).destroy
     redirect_to organization_path @organization
+  end
+
+  def cashier
+    @cashier = Cashier.find_by(member_id: params[:id])
   end
 
   private
