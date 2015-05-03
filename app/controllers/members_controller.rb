@@ -10,7 +10,7 @@ class MembersController < ApplicationController
       ActiveRecord::Base.transaction do
         @member = @organization.members.build(member_param)
         @member.save!
-        @cashier = @member.build_cashier
+        @cashier = @member.build_cashier(money: @organization.default_cashier_size)
         @cashier.save!
         redirect_to @organization, notice: 'Member was successfully added.'
       end
