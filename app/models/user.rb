@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  has_many :cashiers
   has_many :created_organizations, class_name: 'Organization', foreign_key: :owner_id
 
   def self.create_with_omniauth(auth)
