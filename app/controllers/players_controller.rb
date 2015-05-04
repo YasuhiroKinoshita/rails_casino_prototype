@@ -1,4 +1,6 @@
 class PlayersController < ApplicationController
+  before_action :set_game, only: [:show, :create]
+  before_action :member_belongs_organizatino?, only: [:create]
 
   def show
     @players = Player.find_by(game_id: params[:game_id])
@@ -7,17 +9,20 @@ class PlayersController < ApplicationController
   # POST /players
   # POST /players.json
   def create
-    @game = Game.find(params[:game_id])
-    member = Member.find(params[:player][:member_id])
-    redirect_to organization_game_players_path, alert: 'Member is not belongs to Organization' unless @game.organization.members.include?(member)
-
     @player = @game.players.build(member_params)
+    @cashier =  @player.member.cashier
+    @cashier.money -= @game.buy_in
 
-    respond_to do |format|
-      if @player.save
+    begin
+      @player.save!
+      @cashier.save!
+      respond_to do |format|
         format.html { redirect_to organization_game_path @game.organization, @game, notice: 'Player was successfully created.' }
         format.json { render action: 'show', status: :created, location: @player }
-      else
+      end
+    rescue => e
+      logger.error(e)
+      respond_to do |format|
         format.html { render action: 'new' }
         format.json { render json: @player.errors, status: :unprocessable_entity }
       end
@@ -32,5 +37,17 @@ class PlayersController < ApplicationController
 
     def member_params
       params.require(:player).permit(:member_id)
+    end
+
+    def set_game
+      @game = Game.find(params[:game_id])
+    end
+
+    def member_belongs_organizatino?
+      member = Member.find(params[:player][:member_id])
+      if ! @game.organization.members.include?(member)
+        flash[:error] = 'Member is not belongs to Organization'
+        redirect_to @game.organization
+      end
     end
 end
