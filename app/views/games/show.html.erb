@@ -13,7 +13,20 @@
 <p>
   <strong>Players:</strong>
   <% @game.players.each do |player| %>
-    <%= player.user.screen_name %>
+    <%= player.member.user.screen_name %>
+  <% end %>
+</p>
+
+<p>
+  <strong>Add players:</strong>
+  <%= form_for(@game.players.build, url: organization_game_players_path(@game.organization, @game)) do |f| %>
+    <div class="field">
+      <%= f.label :member_id %><br>
+      <%= f.number_field :member_id %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
   <% end %>
 </p>
 
