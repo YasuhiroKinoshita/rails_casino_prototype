@@ -12,7 +12,7 @@ SampleCasino::Application.routes.draw do
     end
   end
 
-  resources :games, only: %i{show edit}
+  resources :games, only: %i{show edit update destory}
 
   root 'static_pages#home'
   get "static_pages/home"
