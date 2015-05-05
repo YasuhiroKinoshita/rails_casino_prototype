@@ -1,6 +1,7 @@
 class Game < ActiveRecord::Base
   has_many :players
   has_many :users, through: :players
+  has_many :statuses, class_name: 'GameStatus', through: :players
   belongs_to :organization
 
   validates :title, length: { maximum: 100 }, presence: true

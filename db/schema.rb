@@ -11,11 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150504071658) do
+ActiveRecord::Schema.define(version: 20150504131537) do
 
   create_table "cashiers", force: true do |t|
     t.integer  "member_id"
     t.integer  "money"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "game_statuses", force: true do |t|
+    t.integer  "player_id"
+    t.integer  "status"
+    t.integer  "money_changes"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

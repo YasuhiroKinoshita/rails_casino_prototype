@@ -18,11 +18,37 @@
 </p>
 
 <p>
+  <strong>Game timeline:</strong>
+  <ul>
+    <% @game.statuses.each do |status| %>
+      <li><%= status.created_at %> : <%= status.player.member.user.screen_name %> : <%= status.status %></li>
+    <% end %>
+  </ul>
+</p>
+
+<p>
   <strong>Add players:</strong>
   <%= form_for(@game.players.build, url: organization_game_players_path(@game.organization, @game)) do |f| %>
     <div class="field">
       <%= f.label :member_id %><br>
       <%= f.number_field :member_id %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+</p>
+
+<p>
+  <strong>Add game status:</strong>
+  <%= form_for(@game.statuses.build, url: organization_game_statuses_path(@game.organization, @game)) do |f| %>
+    <div class="field">
+      <%= f.label :player_id %><br>
+      <%= f.number_field :player_id %>
+    </div>
+    <div class="field">
+      <%= f.label :status_id %><br>
+      <%= f.select :status, [["Join the Game", 0], ["Lose", 1], ["Re-Buy", 2]] %>
     </div>
     <div class="actions">
       <%= f.submit %>

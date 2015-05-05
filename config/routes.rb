@@ -1,9 +1,9 @@
 SampleCasino::Application.routes.draw do
 
-
   resources :organizations do
     resources :games do
       resource :players, only: %i{show create}
+      resources :game_statuses, as: :statuses, path: 'statuses', only: %i{index create destroy}
     end
     resources :members, only: %i{index create destroy} do
       member do
