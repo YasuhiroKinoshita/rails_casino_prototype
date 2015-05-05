@@ -5,4 +5,6 @@ class GameStatus < ActiveRecord::Base
 
   validates :player_id, presence: true
   validates :status, presence: true, numericality: true
+
+  default_scope -> { order("created_at desc") }
 end
