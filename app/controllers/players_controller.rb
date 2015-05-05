@@ -10,12 +10,11 @@ class PlayersController < ApplicationController
   # POST /players.json
   def create
     @player = @game.players.build(member_params)
-    @cashier =  @player.member.cashier
-    @cashier.money -= @game.buy_in
 
     begin
       @player.save!
-      @cashier.save!
+      @join_status = @player.statuses.build(status: 0, money_changes: -(@game.buy_in))
+      @join_status.save!
       respond_to do |format|
         format.html { redirect_to organization_game_path @game.organization, @game, notice: 'Player was successfully created.' }
         format.json { render action: 'show', status: :created, location: @player }
