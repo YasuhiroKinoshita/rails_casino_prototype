@@ -3,6 +3,7 @@ class GamesController < ApplicationController
   before_action :set_organization, only: [:new, :create]
   before_action :set_member, only: [:new, :create]
   before_action :member_belongs_organizatinon?, only: [:new, :create]
+  before_action :game_owner?, only: [:edit, :update]
 
   # GET /games
   # GET /games.json
@@ -90,5 +91,9 @@ class GamesController < ApplicationController
 
     def organization_owner?
       Organization.find(params[:organization_id]).owner == current_user
+    end
+
+    def game_owner?
+      redirect_to @game, alert: 'You are not game owner' unless @game.owner.user.id == current_user.id
     end
 end
