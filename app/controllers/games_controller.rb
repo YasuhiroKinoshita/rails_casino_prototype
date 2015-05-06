@@ -1,5 +1,8 @@
 class GamesController < ApplicationController
   before_action :set_game, only: [:show, :edit, :update, :destroy]
+  before_action :set_organization, only: [:new, :create]
+  before_action :set_member, only: [:new, :create]
+  before_action :member_belongs_organizatinon?, only: [:new, :create]
 
   # GET /games
   # GET /games.json
@@ -14,9 +17,7 @@ class GamesController < ApplicationController
 
   # GET /games/new
   def new
-    redirect_to(organization_games, alart: 'You have no permittion') unless organization_owner?
-    @game = Game.new
-    @organization = Organization.find(params[:organization_id])
+    @game = @member.created_games.build
   end
 
   # GET /games/1/edit
@@ -26,9 +27,8 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.json
   def create
-    redirect_to(organization_games, alart: 'You have no permittion') unless organization_owner?
-    @organization = Organization.find(params[:organization_id])
-    @game = @organization.games.build(game_params)
+    @game = @member.created_games.build(game_params)
+    @game.organization_id = params[:organization_id]
 
     respond_to do |format|
       if @game.save
@@ -71,9 +71,21 @@ class GamesController < ApplicationController
       @game = Game.find(params[:id])
     end
 
+    def set_organization
+      @organization = Organization.find(params[:organization_id])
+    end
+
+    def set_member
+      @member = Member.find_by(user_id: current_user.id, organization_id: params[:organization_id])
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def game_params
       params.require(:game).permit(:title, :buy_in)
+    end
+
+    def member_belongs_organizatinon?
+      redirect_to(organization_games, alart: 'You have no permittion') unless organization_owner?
     end
 
     def organization_owner?
