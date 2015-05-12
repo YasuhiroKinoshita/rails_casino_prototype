@@ -14,8 +14,11 @@ class PlayersController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @player.save!
-        @join_status = @player.statuses.build(status: 0, money_changes: -(@game.buy_in))
+        @join_status = @player.statuses.build(status: 0)
         @join_status.save!
+        cashier = @player.cashier
+        cashier.money -= @game.buy_in
+        cashier.save!
         respond_to do |format|
           format.html { redirect_to organization_game_path @game.organization, @game, notice: 'Player was successfully created.' }
           format.json { render action: 'show', status: :created, location: @player }
