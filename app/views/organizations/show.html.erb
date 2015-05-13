@@ -6,32 +6,39 @@
 </p>
 
 <p>
-  <strong>Games:</strong>
-  <% @organization.games.each do |game| %>
-    title:<%= game.title %>
-    buy in:<%= game.buy_in %>
-  <% end %>
+  <strong>Members:</strong>
+  <div class="row">
+    <% @organization.members.each do |member| %>
+      <div class="col-2">
+        <div class="thumbnail">
+          <img src="<%= member.user.image_url %>" alt="<%= member.user.name %>">
+          <div class="caption">
+            <h4><%= member.user.name %></h4>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </p>
 
-<p>
-  <strong>Members:</strong>
-  <% @organization.members.each do |member| %>
-    name:<%= member.user.name %>
-  <% end %>
-</p>
+  <strong>Games:</strong>
+  <ul class="list-group">
+    <% @organization.games.each do |game| %>
+      <li class="list-group-item">title:<%= link_to game.title, [@organization, game] %> buy in:<%= game.buy_in %></li>
+    <% end %>
+  </ul>
 
 <p>
   <strong>Add new member:</strong>
   <%= form_for(@organization.members.build, url: organization_members_path(@organization)) do |f| %>
     <div class="field">
       <%= f.label :user_id %><br>
-      <%= f.number_field :user_id %>
+      <%= f.select :user_id, User.all.reject{|u| @organization.users.include?(u)}.map{|u| [u.name, u.id]} %>
     </div>
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit 'invite user' %>
     </div>
   <% end %>
 </p>
 
 <%= link_to 'Edit', edit_organization_path(@organization) %> |
-<%= link_to 'Back', organizations_path %>
