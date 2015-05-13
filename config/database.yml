@@ -19,7 +19,10 @@ test:
   timeout: 5000
 
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
+  adapter: mysql
+  database: sample_casino
   pool: 5
   timeout: 5000
+  username: sample_casino
+  password: <%= ENV['SAMPLE_CASINO_DB_PASS'] %>
+  host: <%= ENV['SAMPLE_CASINO_DB_HOST'] %>
