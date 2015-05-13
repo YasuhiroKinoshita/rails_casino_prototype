@@ -13,19 +13,19 @@ class GameStatusesController < ApplicationController
         @status = @game.statuses.build(status_params)
         cashier_check
         @status.save!
-        redirect_to @game, notice: 'Add status successfully'
+        redirect_to [@game.organization, @game], notice: 'Add status successfully'
       end
     rescue => e
       logger.error(e)
-      redirect_to @game, error: 'Add status unsuccessfully'
+      redirect_to [@game.organization, @game], error: 'Add status unsuccessfully'
     end
   end
 
   def destroy
     if @games.staatus.find(params[:status_id]).destroy
-      redirect_to @game, notice: 'Delete status successfully'
+      redirect_to [@game.organization, @game], notice: 'Delete status successfully'
     else
-      redirect_to @game, error: 'Delete status unsuccessfully'
+      redirect_to [@game.organization, @game], error: 'Delete status unsuccessfully'
     end
   end
 

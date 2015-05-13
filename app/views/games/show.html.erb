@@ -1,5 +1,11 @@
 <p id="notice"><%= notice %></p>
 
+<% if @game.is_closed %>
+<p>
+  <strong>This game has closed</strong>
+</p>
+<% end %>
+
 <p>
   <strong>Title:</strong>
   <%= @game.title %>
@@ -27,14 +33,14 @@
 </p>
 
 <p>
-  <strong>Add players:</strong>
+  <strong>Invite player:</strong>
   <%= form_for(@game.players.build, url: organization_game_players_path(@game.organization, @game)) do |f| %>
     <div class="field">
       <%= f.label :member_id %><br>
-      <%= f.number_field :member_id %>
+      <%= f.select :member_id, @organization.members.reject{|m| @game.members.include?(m)}.map{|m| [m.user.name, m.id]} %>
     </div>
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit 'invite player' %>
     </div>
   <% end %>
 </p>
@@ -44,7 +50,7 @@
   <%= form_for(@game.statuses.build, url: organization_game_statuses_path(@game.organization, @game)) do |f| %>
     <div class="field">
       <%= f.label :player_id %><br>
-      <%= f.number_field :player_id %>
+      <%= f.select :player_id, @game.players.reject{|p| p.id.nil? }.map{|p| [p.member.user.name, p.id]} %>
     </div>
     <div class="field">
       <%= f.label :status_id %><br>

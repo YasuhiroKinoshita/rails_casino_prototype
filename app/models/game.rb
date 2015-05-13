@@ -1,5 +1,6 @@
 class Game < ActiveRecord::Base
   has_many :players
+  has_many :members, through: :players
   has_many :users, through: :players
   has_many :statuses, class_name: 'GameStatus', through: :players
   belongs_to :organization

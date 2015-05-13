@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   before_action :set_game, only: [:show, :edit, :update, :destroy]
-  before_action :set_organization, only: [:new, :create, :update]
+  before_action :set_organization, only: [:index, :show, :new, :create, :update]
   before_action :set_member, only: [:new, :create]
   before_action :member_belongs_organizatinon?, only: [:new, :create]
   before_action :game_editable?, only: [:edit, :update]
@@ -8,7 +8,7 @@ class GamesController < ApplicationController
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all
+    @games = @organization.games
   end
 
   # GET /games/1
@@ -67,7 +67,7 @@ class GamesController < ApplicationController
   def destroy
     @game.destroy
     respond_to do |format|
-      format.html { redirect_to games_url }
+      format.html { redirect_to organization_games_url }
       format.json { head :no_content }
     end
   end

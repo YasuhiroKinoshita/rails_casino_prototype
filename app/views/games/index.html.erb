@@ -16,9 +16,9 @@
       <tr>
         <td><%= game.title %></td>
         <td><%= game.buy_in %></td>
-        <td><%= link_to 'Show', game %></td>
-        <td><%= link_to 'Edit', edit_game_path(game) %></td>
-        <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', organization_game_path(@organization, game) %></td>
+        <td><%= link_to 'Edit', edit_organization_game_path(@organization, game) %></td>
+        <td><%= link_to 'Destroy', [@organization, game], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
