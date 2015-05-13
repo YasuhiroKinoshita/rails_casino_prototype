@@ -14,7 +14,7 @@ SampleCasino::Application.routes.draw do
 
   resources :games, only: %i{show edit update destory}
 
-  root 'static_pages#home'
+  root 'organizations#index'
   get "static_pages/home"
   get "static_pages/help"
   get '/auth/:provider/callback', :to => 'sessions#callback'
