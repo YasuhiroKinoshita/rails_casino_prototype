@@ -1,44 +1,61 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @organization.name %>
-</p>
+<div>
+  <h1>Name: <%= @organization.name %></h1>
+</div>
 
-<p>
-  <strong>Members:</strong>
-  <div class="row">
-    <% @organization.members.each do |member| %>
-      <div class="col-2">
-        <div class="thumbnail">
-          <img src="<%= member.user.image_url %>" alt="<%= member.user.name %>">
-          <div class="caption">
-            <h4><%= member.user.name %></h4>
+<div class="container">
+  <div class="row"><h3>Members:</h3></div>
+  <% @organization.members.sort_by{|m| m.cashier.money }.reverse.each_slice(5) do |slice_members| %>
+    <div class="row">
+      <% slice_members.each do |member| %>
+        <div class="col-lg-2 col-md-2">
+          <div class="thumbnail">
+            <%= image_tag member.user.image_url,  alt: member.user.name %>
+            <div class="caption">
+              <h5><%= member.user.name %></h5>
+            </div>
           </div>
         </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div>
+  <table class="table">
+    <caption>Games:</caption>
+    <thead>
+      <tr>
+        <th>Game title</th>
+        <th>Start</th>
+        <th>Close</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @organization.games.reverse.each do |game| %>
+        <tr>
+          <th><%= link_to game.title, [@organization, game] %></th>
+          <th><%= game.created_at %></th>
+          <th><%= game.updated_at if game.is_closed %></th>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% if current_user.created_organizations.include?(@organization) %>
+  <div>
+    <h3>Add new member:</h3>
+    <%= form_for(@organization.members.build, url: organization_members_path(@organization)) do |f| %>
+      <div class="field">
+        <%= f.label :user_id %><br>
+        <%= f.select :user_id, User.all.reject{|u| @organization.users.include?(u)}.map{|u| [u.name, u.id]} %>
+      </div>
+      <div class="actions">
+        <%= f.submit 'invite user' %>
       </div>
     <% end %>
   </div>
-</p>
-
-  <strong>Games:</strong>
-  <ul class="list-group">
-    <% @organization.games.each do |game| %>
-      <li class="list-group-item">title:<%= link_to game.title, [@organization, game] %> buy in:<%= game.buy_in %></li>
-    <% end %>
-  </ul>
-
-<p>
-  <strong>Add new member:</strong>
-  <%= form_for(@organization.members.build, url: organization_members_path(@organization)) do |f| %>
-    <div class="field">
-      <%= f.label :user_id %><br>
-      <%= f.select :user_id, User.all.reject{|u| @organization.users.include?(u)}.map{|u| [u.name, u.id]} %>
-    </div>
-    <div class="actions">
-      <%= f.submit 'invite user' %>
-    </div>
-  <% end %>
-</p>
-
-<%= link_to 'Edit', edit_organization_path(@organization) %> |
+  <%= link_to 'Edit this organization', edit_organization_path(@organization) %> |
+<% end %>
