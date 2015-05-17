@@ -135,7 +135,7 @@ class GamesController < ApplicationController
     # this method should move to model
     def close_game
       total_buy_in = @game.statuses.where(status: [0, 3]).size * @game.buy_in
-      rate = [0.6, 0.3, 0.1]
+      rate = [0.5, 0.3, 0.2]
       @ranking[0..2].each_with_index do |r, i|
         cashier = r.player.cashier
         cashier.money += total_buy_in * rate[i]
