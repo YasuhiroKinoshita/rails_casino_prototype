@@ -1,37 +1,62 @@
 <p id="notice"><%= notice %></p>
 
 <% if @game.is_closed %>
-<p>
-  <strong>This game has closed</strong>
-</p>
+  <div class="alert alert-warning" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    This game has closed
+  </div>
 <% end %>
 
-<p>
-  <strong>Title:</strong>
-  <%= @game.title %>
-</p>
+<div class="page-header">
+  <h1><%= @game.title %></h1>
+</div>
 
-<p>
-  <strong>Buy in:</strong>
-  <%= @game.buy_in %>
-</p>
+<div class="btn-group" role="group" aria-label="...">
+  <button type="button" class="btn btn-default" disabled="disabled"><%= @game.buy_in %>DWD buy in</button>
+  <button type="button" class="btn btn-default" disabled="disabled">Now <%= @game.players.size %> players</button>
+  <button type="button" class="btn btn-default" disabled="disabled">Started at <%= @game.created_at %></button>
+</div>
 
-<p>
-  <strong>Players:</strong>
-  <% @game.players.each do |player| %>
-    <%= player.member.user.screen_name %>
-  <% end %>
-</p>
+<div class="page-header">
+  <h1>Players & Timeline</h1>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+      <% @game.players.each_slice(3) do |slice_players| %>
+        <div class="row">
+          <% slice_players.each do |player| %>
+            <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+              <%= image_tag player.member.user.image_url, alt: player.member.user.name %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
 
-<p>
-  <strong>Game timeline:</strong>
-  <ul>
-    <% @game.statuses.each do |status| %>
-      <li><%= status.created_at %> : <%= status.player.member.user.screen_name %> : <%= status.status %></li>
-    <% end %>
-  </ul>
-</p>
+    <div class="col-lg-5 col-md-6 col-sm-6 col-xs-6">
+      <ul class="list-group">
+        <% @game.statuses.each do |status| %>
+          <li class="list-group-item">
+          <%= image_tag status.player.member.user.image_url %>
+          <% if status.status == 0 %>
+            <button type="button" class="btn btn-info">Join the Game</button>
+          <% elsif status.status == 1 %>
+            <button type="button" class="btn btn-success">Win!</button>
+          <% elsif status.status == 2 %>
+            <button type="button" class="btn btn-warning">Lose</button>
+          <% elsif status.status == 3 %>
+            <button type="button" class="btn btn-info">Re-Buy</button>
+          <% end %>
+          at <%= status.created_at %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
 
+<% if @game.owner.user == current_user %>
 <p>
   <strong>Invite player:</strong>
   <%= form_for(@game.players.build, url: organization_game_players_path(@game.organization, @game)) do |f| %>
@@ -61,13 +86,16 @@
     </div>
   <% end %>
 </p>
+<% end %>
 
-<div>
-  <%= form_for(@game, url: organization_game_path(@game.organization, @game)) do |f| %>
-    <%= f.hidden_field :is_closed, value: true %>
-    <%= f.submit 'close game' %>
-  <% end %>
-</div>
+<% unless @game.is_closed %>
+  <div>
+    <%= form_for(@game, url: organization_game_path(@game.organization, @game)) do |f| %>
+      <%= f.hidden_field :is_closed, value: true %>
+      <%= f.submit 'close game' %>
+    <% end %>
+  </div>
+<% end %>
 
 <%= link_to 'Edit', edit_organization_game_path(@game.organization, @game) %> |
 <% if @organization %>
