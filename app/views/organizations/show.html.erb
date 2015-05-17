@@ -44,7 +44,7 @@
   </table>
 </div>
 
-<% if current_user.created_organizations.include?(@organization) %>
+<% if current_user && current_user.created_organizations.include?(@organization) %>
   <div>
     <h3>Add new member:</h3>
     <%= form_for(@organization.members.build, url: organization_members_path(@organization)) do |f| %>
