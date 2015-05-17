@@ -2,9 +2,9 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.5'
+gem 'rails_12factor'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 gem 'mysql'
 
 # Use SCSS for stylesheets
@@ -36,6 +36,7 @@ gem 'omniauth-twitter'
 gem 'settingslogic'
 
 group :development do
+  gem 'sqlite3'
   gem 'pry'
   gem 'pry-rails'
   gem 'rb-readline'
