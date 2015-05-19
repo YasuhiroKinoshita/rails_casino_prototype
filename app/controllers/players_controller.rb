@@ -21,7 +21,7 @@ class PlayersController < ApplicationController
         cashier.save!
         respond_to do |format|
           format.html { redirect_to organization_game_path @game.organization, @game, notice: 'Player was successfully created.' }
-          format.json { render action: 'show', status: :created, location: @player }
+          format.json { render json: @player }
         end
       end
     rescue => e

@@ -14,6 +14,7 @@ class GamesController < ApplicationController
   # GET /games/1
   # GET /games/1.json
   def show
+    @player_create_path = organization_game_players_url(@organization, @game)
   end
 
   # GET /games/new

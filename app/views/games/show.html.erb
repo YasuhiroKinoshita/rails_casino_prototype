@@ -57,47 +57,62 @@
 </div>
 
 <% if current_user && @game.owner.user == current_user %>
-<p>
-  <strong>Invite player:</strong>
-  <%= form_for(@game.players.build, url: organization_game_players_path(@game.organization, @game)) do |f| %>
-    <div class="field">
-      <%= f.label :member_id %><br>
-      <%= f.select :member_id, @organization.members.reject{|m| @game.members.include?(m)}.map{|m| [m.user.name, m.id]} %>
+  <div class="panel panel-default">
+    <div class="panel-heading">Invite player</div>
+    <div class="panel-body">
+        <select name="invite-members" multiple="multiple" class="image-picker show-html">
+        <% @organization.members.reject{|m| @game.members.include?(m)}.each do |m| %>
+            <option data-img-src="<%= m.user.image_url%>" value="<%= m.id %>"><%= m.user.name %></option>
+        <% end %>
+      </select>
     </div>
-    <div class="actions">
-      <%= f.submit 'invite player' %>
+    <div class="panel-footer">
+      <button type="button" id="inviteButton" class="btn btn-primary" data-loading-text="inviting..." autocomplete="off">
+        Invite
+      </button>
     </div>
-  <% end %>
-</p>
-
-<p>
-  <strong>Add game status:</strong>
-  <%= form_for(@game.statuses.build, url: organization_game_statuses_path(@game.organization, @game)) do |f| %>
-    <div class="field">
-      <%= f.label :player_id %><br>
-      <%= f.select :player_id, @game.players.reject{|p| p.id.nil? }.map{|p| [p.member.user.name, p.id]} %>
-    </div>
-    <div class="field">
-      <%= f.label :status_id %><br>
-      <%= f.select :status, [["Join the Game", 0], ["Win", 1], ["Lose", 2], ["Re-Buy", 3]] %>
-    </div>
-    <div class="actions">
-      <%= f.submit %>
-    </div>
-  <% end %>
-</p>
-<% end %>
-
-<% unless @game.is_closed %>
-  <div>
-    <%= form_for(@game, url: organization_game_path(@game.organization, @game)) do |f| %>
-      <%= f.hidden_field :is_closed, value: true %>
-      <%= f.submit 'close game' %>
-    <% end %>
   </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">Add game status</div>
+    <div class="panel-body">
+      <%= form_for(@game.statuses.build, url: organization_game_statuses_path(@game.organization, @game)) do |f| %>
+        <%= f.label :player_id %><br>
+        <%= f.select :player_id, @game.players.reject{|p| p.id.nil? }.map{|p| [p.member.user.name, p.id, {'data-img-src'=>p.member.user.image_url}]} %>
+    </div>
+    <div class="panel-footer">
+        <%= f.radio_button :status, 1 %><%= f.label :status_1, "Win" %>
+        <%= f.radio_button :status, 2 %><%= f.label :status_2, "Lose" %>
+        <%= f.radio_button :status, 3 %><%= f.label :status_3, "Re-Buy" %>
+        <%= f.submit %>
+      <% end %>
+    </div>
+  </div>
+
+  <% unless @game.is_closed %>
+    <div>
+      <%= form_for(@game, url: organization_game_path(@game.organization, @game)) do |f| %>
+        <%= f.hidden_field :is_closed, value: true %>
+        <%= f.submit 'close game' %>
+      <% end %>
+    </div>
+  <% end %>
 <% end %>
 
 <%= link_to 'Edit', edit_organization_game_path(@game.organization, @game) %> |
 <% if @organization %>
   <%= link_to 'Back', organization_games_path %>
 <% end %>
+
+<script type="text/javascript">
+  $("select").imagepicker()
+</script>
+
+<script type="text/javascript">
+  $('#inviteButton').on('click', function(){
+      $('[name=invite-members] option:selected').each(function() {
+        $.post("<%= @player_create_path %>.json", {player: {member_id: $(this).val()}});
+      });
+      location.reload()
+    });
+</script>
