@@ -11,7 +11,7 @@
       <% slice_members.each do |member| %>
         <div class="col-lg-2 col-md-2">
           <div class="thumbnail">
-            <%= image_tag member.user.image_url,  alt: member.user.name %>
+            <%= image_tag member.user.image_url,  alt: member.user.name, size: "50x50" %>
             <div class="caption">
               <h5><%= member.user.name %></h5>
             </div>

@@ -27,7 +27,7 @@
         <div class="row">
           <% slice_players.each do |player| %>
             <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-              <%= image_tag player.member.user.image_url, alt: player.member.user.name %>
+              <%= image_tag player.member.user.image_url, alt: player.member.user.name, size: "50x50" %>
             </div>
           <% end %>
         </div>
@@ -38,7 +38,7 @@
       <ul class="list-group">
         <% @game.statuses.each do |status| %>
           <li class="list-group-item">
-          <%= image_tag status.player.member.user.image_url %>
+          <%= image_tag status.player.member.user.image_url, size: "50x50"  %>
           <% if status.status == 0 %>
             <button type="button" class="btn btn-info">Join the Game</button>
           <% elsif status.status == 1 %>
