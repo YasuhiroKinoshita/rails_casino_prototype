@@ -35,6 +35,8 @@ gem 'jbuilder', '~> 1.2'
 # auth
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'omniauth-facebook'
+gem 'omniauth-slack'
 gem 'settingslogic'
 
 group :development do
