@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
     create do |user|
       user.provider = auth['provider']
       user.uid = auth['uid']
-      user.screen_name = auth['info']['nickname']
+      user.screen_name = auth['info']['nickname'] || auth['info']['name']
       user.name = auth['info']['name']
       user.image_url = auth['info']['image']
     end

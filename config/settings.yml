@@ -5,6 +5,9 @@ development:
   twitter:
     consumer_key: <%= ENV['RAILS_TWITTER_CONSUMER_KEY'] %>
     consumer_secret: <%= ENV['RAILS_TWITTER_CONSUMER_SECRET'] %>
+  facebook:
+    key: <%= ENV['RAILS_FACEBOOK_KEY'] %>
+    secret: <%= ENV['RAILS_FACEBOOK_SECRET'] %>
 
 test:
   <<: *defaults
@@ -14,3 +17,6 @@ production:
   twitter:
     consumer_key: <%= ENV['RAILS_TWITTER_CONSUMER_KEY'] %>
     consumer_secret: <%= ENV['RAILS_TWITTER_CONSUMER_SECRET'] %>
+  facebook:
+    key: <%= ENV['RAILS_FACEBOOK_KEY'] %>
+    secret: <%= ENV['RAILS_FACEBOOK_SECRET'] %>
