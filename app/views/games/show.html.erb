@@ -27,7 +27,9 @@
         <div class="row">
           <% slice_players.each do |player| %>
             <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-              <%= image_tag player.member.user.image_url, alt: player.member.user.name, size: "50x50" %>
+              <div class="thumbnail">
+                <%= image_tag player.member.user.image_url, alt: player.member.user.name, size: "50x50" %>
+              </div>
             </div>
           <% end %>
         </div>
