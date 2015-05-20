@@ -1,5 +1,6 @@
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
+  before_action :check_member, only: [:show, :edit, :update, :destroy]
 
   # GET /organizations
   # GET /organizations.json
@@ -62,6 +63,11 @@ class OrganizationsController < ApplicationController
   end
 
   private
+
+    def check_member
+      redirect_to(root_path, alert: 'You should join team') unless current_user.created_organizations.include?(@organization) || @organization.members.map{|m| m.user }.include?(current_user)
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_organization
       @organization = Organization.find(params[:id])
